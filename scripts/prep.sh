@@ -1,0 +1,3 @@
+#!/bin/bash
+
+bwa index ref/EXP_REFINEFINAL1_bppAdjust_cmap_physalis_fasta_NGScontigs_HYBRID_SCAFFOLD_NCBI.fasta

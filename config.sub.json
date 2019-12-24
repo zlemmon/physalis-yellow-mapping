@@ -1,0 +1,7 @@
+{
+  "fastqFiles": [
+    "Phy50_Lib_S3_sub_R1_001.fastq.gz",
+    "Phy50_Lib_S3_sub_R2_001.fastq.gz"
+  ],
+  "reference": "ref/G20_hifi_hybrid_scaffold_ncbi_notScaffolded.fasta"
+}

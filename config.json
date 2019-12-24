@@ -1,0 +1,11 @@
+{
+  "fastqFiles": [
+    "Phy50_Lib_S3_R1_001.fastq.gz",
+    "Phy50_Lib_S3_R2_001.fastq.gz",
+    "purple_pool_S1_R1_001.fastq.gz",
+    "purple_pool_S1_R2_001.fastq.gz",
+    "yellow_pool_S2_R1_001.fastq.gz",
+    "yellow_pool_S2_R2_001.fastq.gz"
+  ],
+  "reference": "ref/G20_hifi_hybrid_scaffold_ncbi_notScaffolded.fasta"
+}
