@@ -16,7 +16,7 @@ The Docker container is currently set up to run in interactive mode (`-it`). In 
 docker run --rm -it -v ${PWD}/:/app bsa
 ```
 
-Inside the container you will likely have to invoke `bwa index` on the reference fasta file to build the BWA indices (~15-20m for a 1-2 Gbp genome, but depends on how large your reference genome). Also make sure you point the `config*json` at the appropriate reference. When ready to run the main analysis do the following from in the running container:
+Inside the container you will likely have to invoke `bwa index` on the reference fasta file to build the BWA indices (~15-30m for a 1-2 Gbp genome, but depends on how large your reference genome is and how big a machine you can throw at it). Also make sure you point the `config*json` at the appropriate reference. When ready to run the main analysis do the following from in the running container:
 
 ```code
 snakemake -j --configfile /path/to/config.json

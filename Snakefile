@@ -102,7 +102,7 @@ rule bwa:
 		samtools index {output.sortedbam}
 			
 		samtools flagstat {output.sortedbam} > {output.flagstat}
-		picard MarkDuplicates VALIDATION_STRINGENCY=LENIENT \
+		picard -Xmx12g MarkDuplicates VALIDATION_STRINGENCY=LENIENT \
 			$(printf 'INPUT=%s ' {output.sortedbam}) \
 			OUTPUT={output.dups} METRICS_FILE={output.log} \
 			VERBOSITY=WARNING 
