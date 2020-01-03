@@ -21,3 +21,25 @@ Inside the container you will likely have to invoke `bwa index` on the reference
 ```code
 snakemake -j --configfile /path/to/config.json
 ```
+
+This gets you three separate VCF files and alignment bam files. I further processed by filtering the Phy50 yellow parent to only include homozygous sites and then recalling SNPs for the genome across 3 alignments all at once. 
+
+```bash
+bcftools filter -i 'GT=="1/1"' vcf/Phy50_Lib_S3.filter.vcf.gz | bcftools view -Oz -o vcf/Phy50_Lib_S3.filter.homozygous.vcf.gz
+
+bcftools mpileup --fasta-ref ref/G20_hifi_hybrid_scaffold_ncbi_notScaffolded.fasta --max-depth 1000000 --max-idepth 1000000 --annotate FORMAT/DP,FORMAT/AD --no-BAQ --min-BQ 0 -T vcf/Phy50_Lib_S3.filter.homozygous.vcf.gz -O b bam/Phy50_Lib_S3.dups.bam bam/purple_pool_S1.dups.bam bam/yellow_pool_S2.dups.bam | bcftools call -mv -O z -o vcf/combined_calls.vcf.gz
+```
+
+At this point, we should have the combined variant calls across all three libraries in the `vcf/combined_calls.vcf.gz` file. They can be parsed into a gunzip compressed text tab-delimited file with the following rerun of the Snakefile
+
+```bash
+bcftools query -f '%CHROM\t%POS\t%REF\t%ALT\t%DP[\t%SAMPLE %GT %AD]\n' vcf/combined_calls.vcf.gz | awk 'BEGIN{FS="\t"} \
+	{printf("%s\t%s\t%s\t%s\t%s",$1, $2, $3, $4, $5)} \
+	{for(i=6;i<=NF;i++){ \
+		string=$i; split(string, SGD, " "); \
+		sample=SGD[1] ; gt = SGD[2] ; ad = SGD[3]; \
+		split(ad, ad2, ","); \
+		printf("\t%s %s %s %s", sample, gt, ad2[1], ad2[2]); \
+	} \
+	printf("\n"); }' | gzip > vcf/combined_calls.txt.gz
+```
